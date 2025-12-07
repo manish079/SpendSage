@@ -14,9 +14,11 @@ from rest_framework.permissions import IsAuthenticated
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+
 class UserRegistrationView(generics.CreateAPIView):
     """
     Public endpoint for new user registration.
+    generics.CreateAPIView becuase we don't need need other methods
     """
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -31,9 +33,9 @@ class UserRegistrationAPIView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             
-            return Response(api_success_response(user), status = status.HTTP_201_CREATED)
+            return api_success_response("User registration successful", user, status.HTTP_201_CREATED)
         
-        return Response(api_error_response(serializer.errors), status = status.HTTP_400_BAD_REQUEST)   
+        return api_error_response("User registration failed", serializer.errors, status.HTTP_400_BAD_REQUEST)   
 
 class UserProfileView(APIView):
     """
@@ -46,12 +48,12 @@ class UserProfileView(APIView):
     def get(self, request):
         """Retrieves the current user's details."""
         serializer = UserSerializer(request.user)
-        return Response(serializer.data)
+        return api_success_response("User details retrieved successfully", serializer.data, status.HTTP_200_OK)
 
     def put(self, request):
         """Updates the current user's details (e.g., currency)."""
         serializer = UserSerializer(request.user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)  
+            return api_success_response("User profile updated successfully", serializer.data, status.HTTP_200_OK)
+        return api_error_response("Error updating profile", serializer.errors, status.HTTP_400_BAD_REQUEST)
