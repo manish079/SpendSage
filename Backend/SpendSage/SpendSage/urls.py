@@ -27,5 +27,6 @@ urlpatterns = [
     
     path('api/v1/', include([
         path('auth/', include('users.urls')),
+        path('', include('expenses.urls')),
     ])),
 ]

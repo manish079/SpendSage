@@ -20,3 +20,5 @@ def api_error_response(message, error_details=None, status_code=status.HTTP_400_
         "error": error_details if error_details else {}
     }
     return Response(response, status=status_code)
+
+

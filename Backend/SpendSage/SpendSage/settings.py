@@ -107,7 +107,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated', # NFR-S2: Secure by default
-    ),
+    )
 }
 
 
